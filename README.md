@@ -1,9 +1,12 @@
-# LAC Tool
-Do most <a href="https://play.google.com/store/apps/details?id=com.MA.LAC">LAC</a> related stuff without having to mess with files
+# LAC Tool (Legacy)
+Legacy version of [LAC Tool](https://github.com/aliernfrog/lac-tool) with Android 4.3 and 5 support.
 
-## 📥 <a href="https://github.com/aliernfrog/lac-tool/releases">Download</a>
+> **Warning**: This repository is still a WIP, please use [LAC Tool v2.0](https://github.com/aliernfrog/lac-tool/releases/tag/20) for now
+
+## 📥 Download
 [![Download count](https://img.shields.io/github/downloads/aliernfrog/lac-tool/total.svg)]()
-- Requires Android 4.3 or above
+- [Stable version (Android 4.3 or above) (Recommended)](https://github.com/aliernfrog/lac-tool/releases/tag/20)
+- [Alpha version (Android 6.0 or above) (Unstable)](https://github.com/aliernfrog/lac-tool/releases)
 - F-Droid version is no longer available, new updates will be published on GitHub
 
 ## 💡 Features
