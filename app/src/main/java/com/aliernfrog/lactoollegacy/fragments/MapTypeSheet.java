@@ -1,4 +1,4 @@
-package com.aliernfrog.LacMapTool.fragments;
+package com.aliernfrog.lactoollegacy.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -12,8 +12,8 @@ import android.widget.RadioGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.aliernfrog.LacMapTool.R;
-import com.aliernfrog.LacMapTool.utils.AppUtil;
+import com.aliernfrog.lactoollegacy.R;
+import com.aliernfrog.lactoollegacy.utils.AppUtil;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
 public class MapTypeSheet extends BottomSheetDialogFragment {

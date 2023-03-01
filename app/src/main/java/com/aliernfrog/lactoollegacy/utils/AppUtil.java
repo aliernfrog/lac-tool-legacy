@@ -1,4 +1,4 @@
-package com.aliernfrog.LacMapTool.utils;
+package com.aliernfrog.lactoollegacy.utils;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;

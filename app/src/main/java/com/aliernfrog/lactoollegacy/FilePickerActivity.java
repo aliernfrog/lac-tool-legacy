@@ -1,4 +1,4 @@
-package com.aliernfrog.LacMapTool;
+package com.aliernfrog.lactoollegacy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -21,7 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aliernfrog.LacMapTool.utils.AppUtil;
+import com.aliernfrog.lactoollegacy.utils.AppUtil;
 import com.hbisoft.pickit.PickiT;
 import com.hbisoft.pickit.PickiTCallbacks;
 

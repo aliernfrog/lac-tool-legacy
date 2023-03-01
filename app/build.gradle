@@ -17,7 +17,7 @@ android {
     buildToolsVersion "30.0.3"
 
     defaultConfig {
-        applicationId "com.aliernfrog.LacMapTool"
+        applicationId "com.aliernfrog.lactoollegacy"
         minSdkVersion 18
         targetSdkVersion 31
         versionCode 20
