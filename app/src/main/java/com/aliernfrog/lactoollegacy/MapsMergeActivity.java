@@ -1,4 +1,4 @@
-package com.aliernfrog.LacMapTool;
+package com.aliernfrog.lactoollegacy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -14,10 +14,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aliernfrog.LacMapTool.fragments.MapDownloadSheet;
-import com.aliernfrog.LacMapTool.fragments.MapPickerSheet;
-import com.aliernfrog.LacMapTool.utils.AppUtil;
-import com.aliernfrog.LacMapTool.utils.FileUtil;
+import com.aliernfrog.lactoollegacy.fragments.MapDownloadSheet;
+import com.aliernfrog.lactoollegacy.fragments.MapPickerSheet;
+import com.aliernfrog.lactoollegacy.utils.AppUtil;
+import com.aliernfrog.lactoollegacy.utils.FileUtil;
 import com.google.android.material.textfield.TextInputEditText;
 
 import java.io.File;

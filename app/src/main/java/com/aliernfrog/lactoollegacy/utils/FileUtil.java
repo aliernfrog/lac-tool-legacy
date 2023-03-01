@@ -1,4 +1,4 @@
-package com.aliernfrog.LacMapTool.utils;
+package com.aliernfrog.lactoollegacy.utils;
 
 import android.content.ContentResolver;
 import android.content.Context;
@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 import androidx.documentfile.provider.DocumentFile;
 
-import com.aliernfrog.LacMapTool.R;
+import com.aliernfrog.lactoollegacy.R;
 
 import java.io.BufferedReader;
 import java.io.File;

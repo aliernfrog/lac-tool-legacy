@@ -1,8 +1,8 @@
-package com.aliernfrog.LacMapTool.utils;
+package com.aliernfrog.lactoollegacy.utils;
 
 import android.content.Context;
 
-import com.aliernfrog.LacMapTool.R;
+import com.aliernfrog.lactoollegacy.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;

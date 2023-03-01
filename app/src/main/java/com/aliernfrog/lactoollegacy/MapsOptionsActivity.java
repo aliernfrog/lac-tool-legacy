@@ -1,4 +1,4 @@
-package com.aliernfrog.LacMapTool;
+package com.aliernfrog.lactoollegacy;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,10 +19,10 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aliernfrog.LacMapTool.fragments.MapTypeSheet;
-import com.aliernfrog.LacMapTool.utils.AppUtil;
-import com.aliernfrog.LacMapTool.utils.FileUtil;
-import com.aliernfrog.LacMapTool.utils.LacMapUtil;
+import com.aliernfrog.lactoollegacy.fragments.MapTypeSheet;
+import com.aliernfrog.lactoollegacy.utils.AppUtil;
+import com.aliernfrog.lactoollegacy.utils.FileUtil;
+import com.aliernfrog.lactoollegacy.utils.LacMapUtil;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;

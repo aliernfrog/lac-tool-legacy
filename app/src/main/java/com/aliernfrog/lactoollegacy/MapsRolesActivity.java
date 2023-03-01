@@ -1,4 +1,4 @@
-package com.aliernfrog.LacMapTool;
+package com.aliernfrog.lactoollegacy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aliernfrog.LacMapTool.utils.AppUtil;
+import com.aliernfrog.lactoollegacy.utils.AppUtil;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
