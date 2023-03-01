@@ -66,7 +66,9 @@
                 android:id="@+id/screenshots_log"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="?android:textColorPrimary" />
+                android:textColor="?android:textColorPrimary"
+                android:visibility="gone"
+                tools:visibility="visible" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
