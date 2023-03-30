@@ -9,10 +9,13 @@ import android.os.StrictMode.ThreadPolicy
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.appcompat.widget.Toolbar
+import com.aliernfrog.laclib.data.LACMapObjectFilter
 import com.aliernfrog.laclib.enum.LACMapOptionType
 import com.aliernfrog.laclib.enum.LACMapType
 import com.aliernfrog.laclib.map.LACMapEditor
+import com.aliernfrog.laclib.util.DEFAULT_MAP_OBJECT_FILTERS
 import com.aliernfrog.lactoollegacy.fragments.MapTypeSheet
 import com.aliernfrog.lactoollegacy.fragments.MapTypeSheet.MapTypeListener
 import com.aliernfrog.lactoollegacy.utils.AppUtil
@@ -35,10 +38,13 @@ class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
     private lateinit var mapTypeLinear: LinearLayout
     private lateinit var mapTypeButton: Button
     private lateinit var optionsLinear: LinearLayout
+    private lateinit var objectFilterQuery: EditText
+    private lateinit var objectFilterSuggestions: LinearLayout
+    private lateinit var objectFilterCaseSensitive: SwitchCompat
+    private lateinit var objectFilterExactMatch: SwitchCompat
+    private lateinit var objectFilterRemove: Button
     private lateinit var otherOptionsLinear: LinearLayout
     private lateinit var editRolesButton: Button
-    private lateinit var removeAllTdm: Button
-    private lateinit var removeAllRace: Button
     private lateinit var fixMapButton: Button
     private lateinit var saveChanges: FloatingActionButton
     private lateinit var debugText: TextView
@@ -68,16 +74,21 @@ class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
         mapTypeLinear = findViewById(R.id.mapsOptions_mapType_linear)
         mapTypeButton = findViewById(R.id.mapsOptions_mapType_change)
         optionsLinear = findViewById(R.id.mapsOptions_options_linear)
+        objectFilterQuery = findViewById(R.id.mapsOptions_filterObjects_query)
+        objectFilterSuggestions = findViewById(R.id.mapsOptions_filterObjects_suggestions)
+        objectFilterCaseSensitive = findViewById(R.id.mapsOptions_filterObjects_caseSensitive)
+        objectFilterExactMatch = findViewById(R.id.mapsOptions_filterObjects_exactMatch)
+        objectFilterRemove = findViewById(R.id.mapsOptions_filterObjects_remove)
         otherOptionsLinear = findViewById(R.id.mapsOptions_otherOptions_linear)
         editRolesButton = findViewById(R.id.mapsOptions_roles_editRoles)
-        removeAllTdm = findViewById(R.id.mapsOptions_removeAll_tdm)
-        removeAllRace = findViewById(R.id.mapsOptions_removeAll_race)
         fixMapButton = findViewById(R.id.mapsOptions_fix_button)
         saveChanges = findViewById(R.id.mapsOptions_save_button)
         debugText = findViewById(R.id.mapsOptions_log)
         if (config.getBoolean("enableDebug", false)) debugText.visibility = View.VISIBLE
 
         getMap()
+        loadObjectFilterSuggestions()
+        filterObjects()
         setListeners()
     }
 
@@ -150,6 +161,35 @@ class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
         }
     }
 
+    private fun loadObjectFilterSuggestions() {
+        DEFAULT_MAP_OBJECT_FILTERS.forEach { filter ->
+            val view = layoutInflater.inflate(R.layout.inflate_suggestion, objectFilterSuggestions, false) as View
+            val text: TextView = view.findViewById(R.id.suggestion)
+            text.text = filter.filterName ?: "-"
+            AppUtil.handleOnPressEvent(view) {
+                objectFilterQuery.setText(filter.query)
+                objectFilterCaseSensitive.isChecked = filter.caseSensitive
+                objectFilterExactMatch.isChecked = filter.exactMatch
+                filterObjects()
+            }
+            objectFilterSuggestions.addView(view)
+        }
+    }
+
+    private fun getObjectFilter(): LACMapObjectFilter {
+        return LACMapObjectFilter(
+            query = objectFilterQuery.text.toString(),
+            caseSensitive = objectFilterCaseSensitive.isChecked,
+            exactMatch = objectFilterExactMatch.isChecked
+        )
+    }
+
+    private fun filterObjects() {
+        val matches = mapEditor.getObjectsMatchingFilter(getObjectFilter())
+        objectFilterRemove.text = getString(R.string.mapEdit_filterObjects_remove).replace("{COUNT}", matches.size.toString())
+        objectFilterRemove.visibility = if (matches.isEmpty()) View.GONE else View.VISIBLE
+    }
+
     private fun saveMap() {
         try {
             devLog("attempting to save the map")
@@ -203,10 +243,15 @@ class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
         AppUtil.handleOnPressEvent(optionsLinear)
         AppUtil.handleOnPressEvent(otherOptionsLinear)
         AppUtil.handleOnPressEvent(editRolesButton) { editRoles() }
-        //TODO implement object filtering and suggestions
-        //AppUtil.handleOnPressEvent(removeAllTdm) { removeAllObjects("Team_") }
-        //AppUtil.handleOnPressEvent(removeAllRace) { removeAllObjects("Checkpoint_Editor") }
         //AppUtil.handleOnPressEvent(fixMapButton) { fixMap() } TODO
+        AppUtil.afterTextChanged(objectFilterQuery) { filterObjects() }
+        objectFilterCaseSensitive.setOnCheckedChangeListener { _, _ -> filterObjects() }
+        objectFilterExactMatch.setOnCheckedChangeListener { _, _ -> filterObjects() }
+        AppUtil.handleOnPressEvent(objectFilterRemove) {
+            val count = mapEditor.removeObjectsMatchingFilter(getObjectFilter())
+            Toast.makeText(applicationContext, getString(R.string.mapEdit_filterObjects_removed).replace("{COUNT}", count.toString()), Toast.LENGTH_SHORT).show()
+            filterObjects()
+        }
         AppUtil.handleOnPressEvent(saveChanges) { saveMap() }
     }
 

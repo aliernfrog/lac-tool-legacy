@@ -75,9 +75,13 @@
     <string name="mapEdit_type_4">desert</string>
     <string name="mapEdit_type_5">water</string>
     <string name="mapEdit_mapOptions">Map options</string>
+    <string name="mapEdit_filterObjects">Filter objects</string>
+    <string name="mapEdit_filterObjects_query">Query</string>
+    <string name="mapEdit_filterObjects_exactMatch">Exact match</string>
+    <string name="mapEdit_filterObjects_caseSensitive">Case sensitive</string>
+    <string name="mapEdit_filterObjects_remove">Remove {COUNT} objects</string>
+    <string name="mapEdit_filterObjects_removed">Removed {COUNT} objects</string>
     <string name="mapEdit_otherOptions">Other options</string>
-    <string name="mapEdit_removeAll_tdm">Remove all Team Deathmatch spawnpoints</string>
-    <string name="mapEdit_removeAll_race">Remove all race checkpoints</string>
     <string name="mapEdit_replaceOldObjects">Replace removed objects with new ones</string>
     <string name="mapRoles">Edit map roles</string>
     <string name="mapRoles_addRole">Add role</string>
