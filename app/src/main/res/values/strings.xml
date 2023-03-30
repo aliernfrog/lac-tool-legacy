@@ -63,9 +63,8 @@
     <string name="mapMerge_output">Output</string>
     <string name="mapMerge_output_name">Map name</string>
     <string name="mapMerge_output_merge">Merge now</string>
-    <string name="mapMerge_warning_noMapSelected">Please select both maps!</string>
-    <string name="mapMerge_warning_posNotValid">Map to add position is not valid!\nExample: 0,0,0</string>
-    <string name="mapMerge_warning_noOutputName">Please set output name!</string>
+    <string name="mapMerge_warning_noMapSelected">Select at least 2 maps</string>
+    <string name="mapMerge_warning_noOutputName">Set output name</string>
     <string name="mapEdit_serverName">Server name</string>
     <string name="mapEdit_mapType">Map type</string>
     <string name="mapEdit_type_0">white-grid</string>
