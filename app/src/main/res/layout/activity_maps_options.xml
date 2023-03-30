@@ -143,6 +143,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
+                android:animateLayoutChanges="true"
                 android:background="?lactool_linearDrawable"
                 android:orientation="vertical"
                 android:padding="8dp">
@@ -228,6 +229,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
+                android:animateLayoutChanges="true"
                 android:background="?lactool_linearDrawable"
                 android:orientation="vertical"
                 android:padding="8dp">
@@ -256,17 +258,19 @@
                     tools:visibility="visible" />
 
                 <Button
-                    android:id="@+id/mapsOptions_fix_button"
+                    android:id="@+id/mapsOptions_replaceOldObjects"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:background="?lactool_linearButtonDrawable"
+                    android:background="?lactool_linearBlueDrawable"
                     android:padding="8dp"
                     android:text="@string/mapEdit_replaceOldObjects"
                     android:textAllCaps="false"
-                    android:textColor="?android:textColorPrimary"
+                    android:textColor="?lactool_textOnRed"
                     android:textStyle="bold"
-                    app:backgroundTint="?lactool_button" />
+                    android:visibility="gone"
+                    app:backgroundTint="?lactool_blue"
+                    tools:visibility="visible" />
 
             </LinearLayout>
 

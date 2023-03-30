@@ -82,7 +82,8 @@
     <string name="mapEdit_filterObjects_remove">Remove {COUNT} objects</string>
     <string name="mapEdit_filterObjects_removed">Removed {COUNT} objects</string>
     <string name="mapEdit_otherOptions">Other options</string>
-    <string name="mapEdit_replaceOldObjects">Replace removed objects with new ones</string>
+    <string name="mapEdit_replaceOldObjects">Replace {COUNT} old objects with new ones</string>
+    <string name="mapEdit_replacedOldObjects">Replaced {COUNT} objects</string>
     <string name="mapRoles">Edit map roles</string>
     <string name="mapRoles_addRole">Add role</string>
     <string name="mapRoles_roleName">Role name</string>

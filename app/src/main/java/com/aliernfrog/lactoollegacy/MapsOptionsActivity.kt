@@ -45,7 +45,7 @@ class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
     private lateinit var objectFilterRemove: Button
     private lateinit var otherOptionsLinear: LinearLayout
     private lateinit var editRolesButton: Button
-    private lateinit var fixMapButton: Button
+    private lateinit var replaceOldObjectsButton: Button
     private lateinit var saveChanges: FloatingActionButton
     private lateinit var debugText: TextView
 
@@ -81,7 +81,7 @@ class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
         objectFilterRemove = findViewById(R.id.mapsOptions_filterObjects_remove)
         otherOptionsLinear = findViewById(R.id.mapsOptions_otherOptions_linear)
         editRolesButton = findViewById(R.id.mapsOptions_roles_editRoles)
-        fixMapButton = findViewById(R.id.mapsOptions_fix_button)
+        replaceOldObjectsButton = findViewById(R.id.mapsOptions_replaceOldObjects)
         saveChanges = findViewById(R.id.mapsOptions_save_button)
         debugText = findViewById(R.id.mapsOptions_log)
         if (config.getBoolean("enableDebug", false)) debugText.visibility = View.VISIBLE
@@ -117,6 +117,8 @@ class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
             mapTypeLinear.visibility = View.VISIBLE
         }
         if (mapEditor.mapRoles != null) editRolesButton.visibility = View.VISIBLE
+        if (mapEditor.replacableObjects.isNotEmpty()) replaceOldObjectsButton.visibility = View.VISIBLE
+        replaceOldObjectsButton.text = getString(R.string.mapEdit_replaceOldObjects).replace("{COUNT}", mapEditor.replacableObjects.size.toString())
         loadOptions()
     }
 
@@ -243,7 +245,6 @@ class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
         AppUtil.handleOnPressEvent(optionsLinear)
         AppUtil.handleOnPressEvent(otherOptionsLinear)
         AppUtil.handleOnPressEvent(editRolesButton) { editRoles() }
-        //AppUtil.handleOnPressEvent(fixMapButton) { fixMap() } TODO
         AppUtil.afterTextChanged(objectFilterQuery) { filterObjects() }
         objectFilterCaseSensitive.setOnCheckedChangeListener { _, _ -> filterObjects() }
         objectFilterExactMatch.setOnCheckedChangeListener { _, _ -> filterObjects() }
@@ -251,6 +252,11 @@ class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
             val count = mapEditor.removeObjectsMatchingFilter(getObjectFilter())
             Toast.makeText(applicationContext, getString(R.string.mapEdit_filterObjects_removed).replace("{COUNT}", count.toString()), Toast.LENGTH_SHORT).show()
             filterObjects()
+        }
+        AppUtil.handleOnPressEvent(replaceOldObjectsButton) {
+            val count = mapEditor.replaceOldObjects()
+            Toast.makeText(applicationContext, getString(R.string.mapEdit_replacedOldObjects).replace("{COUNT}", count.toString()), Toast.LENGTH_SHORT).show()
+            replaceOldObjectsButton.visibility = View.GONE
         }
         AppUtil.handleOnPressEvent(saveChanges) { saveMap() }
     }
