@@ -31,17 +31,18 @@ import java.io.File
 class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
     private lateinit var collapsingToolbarLayout: CollapsingToolbarLayout
     private lateinit var toolbar: Toolbar
+    private lateinit var generalLinear: LinearLayout
     private lateinit var serverNameLinear: LinearLayout
     private lateinit var serverName: EditText
     private lateinit var mapTypeLinear: LinearLayout
     private lateinit var mapTypeButton: Button
     private lateinit var optionsLinear: LinearLayout
+    private lateinit var objectFilterLinear: LinearLayout
     private lateinit var objectFilterQuery: EditText
     private lateinit var objectFilterSuggestions: LinearLayout
     private lateinit var objectFilterCaseSensitive: SwitchCompat
     private lateinit var objectFilterExactMatch: SwitchCompat
     private lateinit var objectFilterRemove: Button
-    private lateinit var otherOptionsLinear: LinearLayout
     private lateinit var editRolesButton: Button
     private lateinit var replaceOldObjectsButton: Button
     private lateinit var saveChanges: FloatingActionButton
@@ -67,17 +68,18 @@ class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
 
         collapsingToolbarLayout = findViewById(R.id.mapsOptions_collapsingToolbar)
         toolbar = findViewById(R.id.mapsOptions_toolbar)
+        generalLinear = findViewById(R.id.mapsOptions_general_linear)
         serverNameLinear = findViewById(R.id.mapsOptions_serverName_linear)
         serverName = findViewById(R.id.mapsOptions_serverName_input)
         mapTypeLinear = findViewById(R.id.mapsOptions_mapType_linear)
         mapTypeButton = findViewById(R.id.mapsOptions_mapType_change)
         optionsLinear = findViewById(R.id.mapsOptions_options_linear)
+        objectFilterLinear = findViewById(R.id.mapsOptions_filterObjects_linear)
         objectFilterQuery = findViewById(R.id.mapsOptions_filterObjects_query)
         objectFilterSuggestions = findViewById(R.id.mapsOptions_filterObjects_suggestions)
         objectFilterCaseSensitive = findViewById(R.id.mapsOptions_filterObjects_caseSensitive)
         objectFilterExactMatch = findViewById(R.id.mapsOptions_filterObjects_exactMatch)
         objectFilterRemove = findViewById(R.id.mapsOptions_filterObjects_remove)
-        otherOptionsLinear = findViewById(R.id.mapsOptions_otherOptions_linear)
         editRolesButton = findViewById(R.id.mapsOptions_roles_editRoles)
         replaceOldObjectsButton = findViewById(R.id.mapsOptions_replaceOldObjects)
         saveChanges = findViewById(R.id.mapsOptions_save_button)
@@ -236,13 +238,12 @@ class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
 
     fun setListeners() {
         toolbar.setNavigationOnClickListener { finish() }
-        AppUtil.handleOnPressEvent(serverNameLinear)
+        AppUtil.handleOnPressEvent(generalLinear)
         AppUtil.afterTextChanged(serverName) { mapEditor.serverName = serverName.text.toString() }
-        AppUtil.handleOnPressEvent(mapTypeLinear)
         AppUtil.handleOnPressEvent(mapTypeButton) { openMapTypeView() }
         AppUtil.handleOnPressEvent(optionsLinear)
-        AppUtil.handleOnPressEvent(otherOptionsLinear)
         AppUtil.handleOnPressEvent(editRolesButton) { editRoles() }
+        AppUtil.handleOnPressEvent(objectFilterLinear)
         AppUtil.afterTextChanged(objectFilterQuery) { filterObjects() }
         objectFilterCaseSensitive.setOnCheckedChangeListener { _, _ -> filterObjects() }
         objectFilterExactMatch.setOnCheckedChangeListener { _, _ -> filterObjects() }
