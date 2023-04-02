@@ -43,7 +43,6 @@ public class OptionsActivity extends AppCompatActivity {
     Button deleteTemp;
     LinearLayout experimentalOptions;
     EditText startActivityName;
-    EditText uriSdkVersionInput;
     EditText updateUrlInput;
     LinearLayout changelogLinear;
     TextView changelog;
@@ -217,14 +216,6 @@ public class OptionsActivity extends AppCompatActivity {
         startActivityName.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 startActivityWithName(startActivityName.getText().toString());
-                return true;
-            }
-            return false;
-        });
-        uriSdkVersionInput.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                configEdit.putInt("uriSdkVersion", Integer.parseInt(uriSdkVersionInput.getText().toString()));
-                configEdit.commit();
                 return true;
             }
             return false;
