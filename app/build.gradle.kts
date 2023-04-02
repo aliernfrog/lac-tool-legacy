@@ -6,14 +6,13 @@ plugins {
 android {
     namespace = "com.aliernfrog.lactoollegacy"
     compileSdk = 33
-    //buildToolsVersion "30.0.3"
 
     defaultConfig {
         applicationId = "com.aliernfrog.lactoollegacy"
         minSdk = 18
         targetSdk = 31
-        versionCode = 20
-        versionName = "2.0"
+        versionCode = 201
+        versionName = "2.0.1"
     }
 
     buildTypes {
@@ -31,9 +30,9 @@ android {
 }
 
 dependencies {
-    implementation("androidx.appcompat:appcompat:1.4.1")
-    implementation("com.google.android.material:material:1.5.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.3")
+    implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("com.google.android.material:material:1.8.0")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
     implementation("androidx.documentfile:documentfile:1.0.1")
     implementation("com.github.aliernfrog:laclib:1.1.0")
