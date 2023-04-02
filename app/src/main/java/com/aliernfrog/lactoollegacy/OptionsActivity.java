@@ -22,10 +22,7 @@ import android.widget.Toast;
 
 import com.aliernfrog.lactoollegacy.fragments.ThemeSheet;
 import com.aliernfrog.lactoollegacy.utils.AppUtil;
-import com.aliernfrog.lactoollegacy.utils.WebUtil;
 import com.hbisoft.pickit.PickiT;
-
-import org.json.JSONObject;
 
 @SuppressLint({"UseSwitchCompatOrMaterialCode", "ClickableViewAccessibility"})
 public class OptionsActivity extends AppCompatActivity {
@@ -48,10 +45,6 @@ public class OptionsActivity extends AppCompatActivity {
     EditText startActivityName;
     EditText uriSdkVersionInput;
     EditText updateUrlInput;
-    LinearLayout feedbackLinear;
-    LinearLayout feedback;
-    EditText feedbackInput;
-    Button feedbackSubmit;
     LinearLayout changelogLinear;
     TextView changelog;
     LinearLayout social_linear;
@@ -66,7 +59,6 @@ public class OptionsActivity extends AppCompatActivity {
     PickiT pickiT;
 
     String tempPath;
-    String feedbackUrl = "https://aliernfrog.repl.co";
 
     String appVers;
     Integer appVersCode;
@@ -103,10 +95,6 @@ public class OptionsActivity extends AppCompatActivity {
         startActivityName = findViewById(R.id.options_startActivity);
         uriSdkVersionInput = findViewById(R.id.options_uriSdkVersion);
         updateUrlInput = findViewById(R.id.options_updateUrl);
-        feedbackLinear = findViewById(R.id.options_feedback_linear);
-        feedback = findViewById(R.id.options_feedback);
-        feedbackInput = findViewById(R.id.options_feedback_input);
-        feedbackSubmit = findViewById(R.id.options_feedback_submit);
         changelogLinear = findViewById(R.id.options_changelog_linear);
         changelog = findViewById(R.id.options_changelog);
         social_linear = findViewById(R.id.options_social);
@@ -172,22 +160,6 @@ public class OptionsActivity extends AppCompatActivity {
         if (name.equals("lacId")) requiresRestart = true;
         configEdit.putString(name, value);
         configEdit.commit();
-    }
-
-    void submitFeedback() {
-        String feedback = feedbackInput.getText().toString();
-        if (feedback.length() < 5) return;
-        try {
-            JSONObject object = new JSONObject();
-            object.put("type", "feedback");
-            object.put("feedback", feedback);
-            object.put("from", "LAC Tool "+appVersCode);
-            String response = WebUtil.doPostRequest(feedbackUrl, object);
-            Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
-            feedbackLinear.setVisibility(View.GONE);
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-        }
     }
 
     void openChangeThemeView() {
@@ -267,8 +239,6 @@ public class OptionsActivity extends AppCompatActivity {
             return false;
         });
 
-        AppUtil.handleOnPressEvent(feedbackLinear, () -> AppUtil.toggleView(feedback));
-        AppUtil.handleOnPressEvent(feedbackSubmit, this::submitFeedback);
         AppUtil.handleOnPressEvent(changelogLinear, () -> {
             changelogClicks += 1;
             if (changelogClicks > 15) experimentalOptions.setVisibility(View.VISIBLE);
