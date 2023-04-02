@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/suggestion"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="?lactool_linearButtonDrawable"
+    android:paddingVertical="8dp"
+    android:paddingHorizontal="12dp"
+    android:layout_marginEnd="8dp"
+    android:textColor="?android:textColorPrimary"
+    android:textStyle="bold">
+</TextView>
