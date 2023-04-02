@@ -25,6 +25,7 @@ import java.io.File;
 
 @SuppressLint({"CommitPrefEdits", "ClickableViewAccessibility"})
 public class MainActivity extends AppCompatActivity {
+    LinearLayout newApp;
     LinearLayout missingPerms;
     LinearLayout lacLinear;
     LinearLayout redirectMaps;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         config = getSharedPreferences("APP_CONFIG", Context.MODE_PRIVATE);
         version = update.getInt("versionCode", 0);
 
+        newApp = findViewById(R.id.main_newApp);
         missingPerms = findViewById(R.id.main_missingPerms);
         lacLinear = findViewById(R.id.main_optionsLac);
         redirectMaps = findViewById(R.id.main_maps);
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity {
         log = findViewById(R.id.main_log);
 
         if (config.getBoolean("enableDebug", false)) log.setVisibility(View.VISIBLE);
+        if (Build.VERSION.SDK_INT >= 23) newApp.setVisibility(View.VISIBLE);
         devLog("MainActivity started");
 
         checkUpdates(false);
@@ -204,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void setListeners() {
+        AppUtil.handleOnPressEvent(newApp, () -> redirectURL("https://github.com/aliernfrog/lac-tool/releases"));
         AppUtil.handleOnPressEvent(missingPerms, this::checkPerms);
         AppUtil.handleOnPressEvent(lacLinear);
         AppUtil.handleOnPressEvent(redirectMaps, () -> switchActivity(MapsActivity.class, false));
