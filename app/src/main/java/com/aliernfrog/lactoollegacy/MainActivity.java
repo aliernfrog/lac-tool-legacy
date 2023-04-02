@@ -30,14 +30,12 @@ import java.io.File;
 
 @SuppressLint({"CommitPrefEdits", "ClickableViewAccessibility"})
 public class MainActivity extends AppCompatActivity implements OkCancelSheet.OkCancelListener {
-    LinearLayout missingLac;
     LinearLayout missingPerms;
     LinearLayout lacLinear;
     LinearLayout redirectMaps;
     LinearLayout redirectWallpapers;
     LinearLayout redirectScreenshots;
     LinearLayout appLinear;
-    LinearLayout startLac;
     LinearLayout checkUpdates;
     LinearLayout redirectOptions;
     LinearLayout updateLinear;
@@ -73,14 +71,12 @@ public class MainActivity extends AppCompatActivity implements OkCancelSheet.OkC
         wallpapersPath = update.getString("path-wallpapers", "");
         screenshotsPath = update.getString("path-screenshots", "");
 
-        missingLac = findViewById(R.id.main_missingLac);
         missingPerms = findViewById(R.id.main_missingPerms);
         lacLinear = findViewById(R.id.main_optionsLac);
         redirectMaps = findViewById(R.id.main_maps);
         redirectWallpapers = findViewById(R.id.main_wallpapers);
         redirectScreenshots = findViewById(R.id.main_screenshots);
         appLinear = findViewById(R.id.main_optionsApp);
-        startLac = findViewById(R.id.main_startLac);
         checkUpdates = findViewById(R.id.main_checkUpdates);
         redirectOptions = findViewById(R.id.main_options);
         updateLinear = findViewById(R.id.main_update);
@@ -92,22 +88,9 @@ public class MainActivity extends AppCompatActivity implements OkCancelSheet.OkC
         devLog("MainActivity started");
         devLog("uriSdkVersion: "+uriSdkVersion);
 
-        if (!AppUtil.isLacInstalled(getApplicationContext())) {
-            devLog("lac wasnt found");
-            missingLac.setVisibility(View.VISIBLE);
-            startLac.setVisibility(View.GONE);
-        }
-
         checkUpdates(false);
         checkPerms();
         setListeners();
-    }
-
-    public void launchLac() {
-        PackageManager pm = getPackageManager();
-        Intent intent = pm.getLaunchIntentForPackage(AppUtil.getLacId(getApplicationContext()));
-        finish();
-        startActivity(intent);
     }
 
     public void fetchUpdates() {
@@ -224,6 +207,7 @@ public class MainActivity extends AppCompatActivity implements OkCancelSheet.OkC
         devLog(mk.getPath()+" //"+state);
     }
 
+    @SuppressWarnings("deprecation")
     @SuppressLint("NewApi")
     public Boolean checkUriPerms(@Nullable String path) {
         if (Build.VERSION.SDK_INT < uriSdkVersion) return true;
@@ -248,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements OkCancelSheet.OkC
         }
     }
 
-    public void switchActivity(Class i, Boolean allowWithoutPerms, @Nullable String path) {
+    public void switchActivity(Class<?> i, Boolean allowWithoutPerms, @Nullable String path) {
         if (!allowWithoutPerms && !hasPerms) {
             devLog("no required permissions, checking again");
             checkPerms();
@@ -283,14 +267,12 @@ public class MainActivity extends AppCompatActivity implements OkCancelSheet.OkC
     }
 
     public void setListeners() {
-        AppUtil.handleOnPressEvent(missingLac, () -> redirectURL("https://play.google.com/store/apps/details?id=com.MA.LAC"));
         AppUtil.handleOnPressEvent(missingPerms, this::checkPerms);
         AppUtil.handleOnPressEvent(lacLinear);
         AppUtil.handleOnPressEvent(redirectMaps, () -> switchActivity(MapsActivity.class, false, mapsPath));
         AppUtil.handleOnPressEvent(redirectWallpapers, () -> switchActivity(WallpaperActivity.class, false, wallpapersPath));
         AppUtil.handleOnPressEvent(redirectScreenshots, () -> switchActivity(ScreenshotsActivity.class, false, screenshotsPath));
         AppUtil.handleOnPressEvent(appLinear);
-        AppUtil.handleOnPressEvent(startLac, this::launchLac);
         AppUtil.handleOnPressEvent(checkUpdates, this::fetchUpdates);
         AppUtil.handleOnPressEvent(redirectOptions, () -> switchActivity(OptionsActivity.class, true, null));
     }

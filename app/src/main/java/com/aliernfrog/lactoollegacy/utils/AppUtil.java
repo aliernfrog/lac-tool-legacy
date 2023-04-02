@@ -43,27 +43,6 @@ public class AppUtil {
         return pInfo.versionCode;
     }
 
-    public static String getLacId(Context context) {
-        SharedPreferences config = context.getSharedPreferences("APP_CONFIG", Context.MODE_PRIVATE);
-        String lacId = config.getString("lacId", "lac");
-        String finalId = "com.MA.LAC";
-        if (lacId.equals("lacd")) finalId = "com.MA.LACD";
-        if (lacId.equals("lacm")) finalId = "com.MA.LACM";
-        if (lacId.equals("lacmb")) finalId = "com.MA.LACMB";
-        return finalId;
-    }
-
-    public static Boolean isLacInstalled(Context context) {
-        PackageManager pm = context.getPackageManager();
-        String idToCheck = getLacId(context);
-        try {
-            pm.getPackageInfo(idToCheck, 0);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
     public static void copyToClipboard(String string, Context context) {
         ClipboardManager manager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("LAC Tool", string);
@@ -96,15 +75,6 @@ public class AppUtil {
         SimpleDateFormat frm = new SimpleDateFormat(format);
         Date now = Calendar.getInstance().getTime();
         return frm.format(now);
-    }
-
-    public static Boolean stringIsNumber(String string) {
-        try {
-            Double.parseDouble(string);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
     }
 
     public static void clearTempData(String path) {
