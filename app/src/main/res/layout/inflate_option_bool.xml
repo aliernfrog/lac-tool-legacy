@@ -1,14 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Switch xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.appcompat.widget.SwitchCompat xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/option_bool_switch"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
     android:background="?lactool_linearButtonDrawable"
     android:padding="16dp"
-    android:text="Option title"
     android:textColor="?android:textColorPrimary"
-    android:textStyle="bold"
-    tools:ignore="HardcodedText,UseSwitchCompatOrMaterialXml">
-</Switch>
+    android:textStyle="bold">
+</androidx.appcompat.widget.SwitchCompat>

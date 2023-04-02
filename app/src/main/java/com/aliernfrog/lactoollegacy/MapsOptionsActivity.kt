@@ -1,6 +1,5 @@
 package com.aliernfrog.lactoollegacy
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -29,7 +28,6 @@ import java.io.File
 
 
 @Suppress("DEPRECATION")
-@SuppressLint("ClickableViewAccessibility", "UseSwitchCompatOrMaterialCode")
 class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
     private lateinit var collapsingToolbarLayout: CollapsingToolbarLayout
     private lateinit var toolbar: Toolbar
@@ -100,7 +98,7 @@ class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
             loadMap(rawPath)
         } catch (e: Exception) {
             devLog(e.toString())
-            Toast.makeText(applicationContext, R.string.info_error, Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, e.stackTrace[0].toString(), Toast.LENGTH_SHORT).show()
             finish()
         }
     }
@@ -141,7 +139,7 @@ class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
                 }
                 LACMapOptionType.BOOLEAN -> {
                     val view = layoutInflater.inflate(R.layout.inflate_option_bool, optionsLinear, false) as View
-                    val switchView: Switch = view.findViewById(R.id.option_bool_switch)
+                    val switchView: SwitchCompat = view.findViewById(R.id.option_bool_switch)
                     switchView.text = option.label
                     switchView.isChecked = option.value == "true"
                     switchView.setOnCheckedChangeListener { _, checked ->
@@ -151,7 +149,7 @@ class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
                 }
                 LACMapOptionType.SWITCH -> {
                     val view = layoutInflater.inflate(R.layout.inflate_option_bool, optionsLinear, false) as View
-                    val switchView: Switch = view.findViewById(R.id.option_bool_switch)
+                    val switchView: SwitchCompat = view.findViewById(R.id.option_bool_switch)
                     switchView.text = option.label
                     switchView.isChecked = option.value == "enabled"
                     switchView.setOnCheckedChangeListener { _, checked ->
