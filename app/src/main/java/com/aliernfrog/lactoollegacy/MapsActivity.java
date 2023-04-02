@@ -63,7 +63,6 @@ public class MapsActivity extends AppCompatActivity implements MapPickerSheet.Ma
 
     String currentPath;
     String lacPath;
-    String tempPath;
     String backupPath;
     String autoBackupPath;
     Boolean isImported;
@@ -103,7 +102,6 @@ public class MapsActivity extends AppCompatActivity implements MapPickerSheet.Ma
 
         String appPath = prefsUpdate.getString("path-app", null);
         lacPath = prefsUpdate.getString("path-maps", null);
-        tempPath = prefsUpdate.getString("path-temp-maps", null);
         backupPath = appPath+"backups";
         autoBackupPath = appPath+"auto-backups";
 

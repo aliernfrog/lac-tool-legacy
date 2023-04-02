@@ -32,7 +32,6 @@ public class ScreenshotsActivity extends AppCompatActivity {
     TextView log;
 
     String lacPath;
-    String tempPath;
 
     SharedPreferences config;
     SharedPreferences update;
@@ -49,7 +48,6 @@ public class ScreenshotsActivity extends AppCompatActivity {
         update = getSharedPreferences("APP_UPDATE", Context.MODE_PRIVATE);
 
         lacPath = update.getString("path-screenshots", null);
-        tempPath = update.getString("path-temp-screenshots", null);
 
         toolbar = findViewById(R.id.screenshots_toolbar);
         noScreenshots = findViewById(R.id.screenshots_noScreenshots);
