@@ -322,40 +322,14 @@
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:contentDescription="@string/optionsDiscordRcs"
+                        android:contentDescription="@string/optionsDiscordLac"
                         app:srcCompat="@drawable/social_discord" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/optionsDiscordRcs"
-                        android:textColor="?android:textColorPrimary"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/options_social_discordLacTool"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:background="?lactool_linearButtonDrawable"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:contentDescription="@string/optionsDiscordAliern"
-                        app:srcCompat="@drawable/social_discord" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/optionsDiscordAliern"
+                        android:text="@string/optionsDiscordLac"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="20sp"
                         android:textStyle="bold" />

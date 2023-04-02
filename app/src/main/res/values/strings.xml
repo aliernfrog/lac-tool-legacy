@@ -105,8 +105,7 @@
     <string name="optionsChangelogNoChangelog">No changelog has been found, go to main menu, then check for updates to get changelog</string>
     <string name="optionsChangelogCurrent">Current version</string>
     <string name="optionsChangelogChangelog">Changelog version</string>
-    <string name="optionsDiscordRcs" translatable="false">LAC Discord</string>
-    <string name="optionsDiscordAliern" translatable="false">LAC Tool Discord</string>
+    <string name="optionsDiscordLac" translatable="false">LAC Discord</string>
     <string name="optionsGithub" translatable="false">LAC Tool GitHub</string>
     <string name="optionsExperimental">Experimental options</string>
     <string name="optionsExperimentalHint">Do not change experimental options if you do not know what they do!</string>

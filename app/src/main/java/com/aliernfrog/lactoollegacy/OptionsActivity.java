@@ -48,7 +48,6 @@ public class OptionsActivity extends AppCompatActivity {
     TextView changelog;
     LinearLayout social_linear;
     LinearLayout discord_lac;
-    LinearLayout discord_lacTool;
     LinearLayout github;
 
     SharedPreferences update;
@@ -97,7 +96,6 @@ public class OptionsActivity extends AppCompatActivity {
         changelog = findViewById(R.id.options_changelog);
         social_linear = findViewById(R.id.options_social);
         discord_lac = findViewById(R.id.options_social_discordLac);
-        discord_lacTool = findViewById(R.id.options_social_discordLacTool);
         github = findViewById(R.id.options_social_githubLacTool);
 
         tempPath = update.getString("path-temp", null);
@@ -235,8 +233,7 @@ public class OptionsActivity extends AppCompatActivity {
         });
         AppUtil.handleOnPressEvent(social_linear);
         AppUtil.handleOnPressEvent(discord_lac, () -> redirectURL("https://discord.gg/aQhGqHSc3W"));
-        AppUtil.handleOnPressEvent(discord_lacTool, () -> redirectURL("https://discord.gg/SQXqBMs"));
-        AppUtil.handleOnPressEvent(github, () -> redirectURL("https://github.com/aliernfrog/lac-tool"));
+        AppUtil.handleOnPressEvent(github, () -> redirectURL("https://github.com/aliernfrog/lac-tool-legacy"));
     }
 
     @Override
