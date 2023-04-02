@@ -1,15 +1,10 @@
 package com.aliernfrog.lactoollegacy;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -21,7 +16,6 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.documentfile.provider.DocumentFile;
 
 import com.aliernfrog.lactoollegacy.utils.AppUtil;
 import com.aliernfrog.lactoollegacy.utils.FileUtil;
@@ -46,15 +40,8 @@ public class WallpaperActivity extends AppCompatActivity {
 
     Integer REQUEST_PICK_WALLPAPER = 1;
 
-    Integer uriSdkVersion;
-
     String currentPath;
     String lacPath;
-    String rawLacPath;
-    String tempPath;
-
-    Uri lacTreeUri;
-    DocumentFile lacTreeFile;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -76,17 +63,11 @@ public class WallpaperActivity extends AppCompatActivity {
         prefsConfig = getSharedPreferences("APP_CONFIG", MODE_PRIVATE);
 
         lacPath = prefsUpdate.getString("path-wallpapers", "");
-        rawLacPath = prefsUpdate.getString("path-wallpapers", "");
-        tempPath = prefsUpdate.getString("path-temp-wallpapers", "");
-
-        uriSdkVersion = prefsConfig.getInt("uriSdkVersion", 30);
 
         if (prefsConfig.getBoolean("enableDebug", false)) debugText.setVisibility(View.VISIBLE);
 
         devLog("WallpaperActivity started");
-        devLog("uriSdkVersion: "+uriSdkVersion);
         setListeners();
-        useTempPath();
         devLog("lacPath: "+lacPath);
         getImportedWallpapers();
     }
@@ -100,6 +81,7 @@ public class WallpaperActivity extends AppCompatActivity {
         devLog("done reading");
     }
 
+    @SuppressWarnings("deprecation")
     public void pickWallpaperFile() {
         devLog("attempting to pick a file with request code: "+REQUEST_PICK_WALLPAPER);
         Intent intent = new Intent(this, FilePickerActivity.class);
@@ -136,38 +118,17 @@ public class WallpaperActivity extends AppCompatActivity {
                 name.setText(file.getName());
                 image.setImageBitmap(BitmapFactory.decodeFile(file.getPath()));
                 AppUtil.handleOnPressEvent(copyUrl, () -> {
-                    AppUtil.copyToClipboard("file://"+rawLacPath+"/"+file.getName(), getApplicationContext());
+                    AppUtil.copyToClipboard("file://"+lacPath+"/"+file.getName(), getApplicationContext());
                     Toast.makeText(getApplicationContext(), R.string.info_done, Toast.LENGTH_SHORT).show();
                 });
                 AppUtil.handleOnPressEvent(delete, () -> {
                     devLog("deleting: "+file.getPath());
                     file.delete();
-                    if (Build.VERSION.SDK_INT >= uriSdkVersion) {
-                        DocumentFile documentFile = lacTreeFile.findFile(file.getName());
-                        if (documentFile != null) documentFile.delete();
-                    }
                     rootLinear.removeView(viewGroup);
                     Toast.makeText(getApplicationContext(), R.string.info_done, Toast.LENGTH_SHORT).show();
                 });
                 rootLinear.addView(viewGroup);
             }
-        }
-    }
-
-    @SuppressLint("NewApi")
-    public void useTempPath() {
-        if (Build.VERSION.SDK_INT >= uriSdkVersion) {
-            String treeId = lacPath.replace(Environment.getExternalStorageDirectory()+"/", "primary:");
-            lacTreeUri = DocumentsContract.buildTreeDocumentUri("com.android.externalstorage.documents", treeId);
-            lacTreeFile = DocumentFile.fromTreeUri(getApplicationContext(), lacTreeUri);
-            if (lacTreeFile != null) {
-                DocumentFile[] files = lacTreeFile.listFiles();
-                for (DocumentFile file : files) {
-                    copyFile(file, tempPath + "/" + file.getName());
-                }
-            }
-            lacPath = tempPath;
-            devLog("using temp path as lac path");
         }
     }
 
@@ -182,46 +143,6 @@ public class WallpaperActivity extends AppCompatActivity {
             devLog(e.toString());
             if (toastResult) Toast.makeText(getApplicationContext(), R.string.info_error, Toast.LENGTH_SHORT).show();
         }
-    }
-
-    public void copyFile(DocumentFile source, String destination) {
-        devLog("attempting to copy "+source.getUri()+" to "+destination);
-        try {
-            FileUtil.copyFile(source, destination, getApplicationContext());
-            devLog("copied successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            devLog(e.toString());
-        }
-    }
-
-    @SuppressLint("NewApi")
-    public void copyFile(String src, DocumentFile dst) {
-        devLog("attempting to copy "+src+" to "+dst);
-        try {
-            FileUtil.copyFile(src, dst, getApplicationContext());
-            devLog("copied successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            devLog(e.toString());
-        }
-    }
-
-    public void saveChangesAndFinish() {
-        if (Build.VERSION.SDK_INT >= uriSdkVersion) {
-            devLog("attempting to save changes and finish");
-            File tempFile = new File(tempPath);
-            File[] files = tempFile.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    DocumentFile fileInLac = lacTreeFile.findFile(file.getName());
-                    if (fileInLac == null) fileInLac = lacTreeFile.createFile("", file.getName());
-                    copyFile(file.getPath(), fileInLac);
-                }
-            }
-            FileUtil.deleteDirectoryContent(tempFile);
-        }
-        finish();
     }
 
     void devLog(String toLog) {
@@ -242,18 +163,12 @@ public class WallpaperActivity extends AppCompatActivity {
     }
 
     void setListeners() {
-        toolbar.setNavigationOnClickListener(v -> saveChangesAndFinish());
-        AppUtil.handleOnPressEvent(saveButton, this::saveChangesAndFinish);
+        toolbar.setNavigationOnClickListener(v -> finish());
+        AppUtil.handleOnPressEvent(saveButton, this::finish);
         AppUtil.handleOnPressEvent(helpText, () -> helpText.setVisibility(View.GONE));
         AppUtil.handleOnPressEvent(actionsLinear);
         AppUtil.handleOnPressEvent(pickWallpaperButton, this::pickWallpaperFile);
         AppUtil.handleOnPressEvent(pickedWallpaperLinear);
         AppUtil.handleOnPressEvent(importWallpaperButton, this::importWallpaper);
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        saveChangesAndFinish();
     }
 }

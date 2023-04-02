@@ -34,7 +34,6 @@ dependencies {
     implementation("com.google.android.material:material:1.8.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
-    implementation("androidx.documentfile:documentfile:1.0.1")
     implementation("com.github.aliernfrog:laclib:1.1.0")
     implementation("com.github.HBiSoft:PickiT:2.0.2")
 }

@@ -12,24 +12,19 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Process;
 import android.os.StrictMode;
-import android.provider.DocumentsContract;
-import android.provider.Settings;
 import android.text.Html;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aliernfrog.lactoollegacy.fragments.OkCancelSheet;
 import com.aliernfrog.lactoollegacy.utils.AppUtil;
 
 import java.io.File;
 
 @SuppressLint({"CommitPrefEdits", "ClickableViewAccessibility"})
-public class MainActivity extends AppCompatActivity implements OkCancelSheet.OkCancelListener {
+public class MainActivity extends AppCompatActivity {
     LinearLayout missingPerms;
     LinearLayout lacLinear;
     LinearLayout redirectMaps;
@@ -46,15 +41,10 @@ public class MainActivity extends AppCompatActivity implements OkCancelSheet.OkC
     Integer REQUEST_URI = 1;
 
     Boolean hasPerms;
-    Integer uriSdkVersion;
     Integer version;
 
     SharedPreferences update;
     SharedPreferences config;
-
-    String mapsPath;
-    String wallpapersPath;
-    String screenshotsPath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +55,7 @@ public class MainActivity extends AppCompatActivity implements OkCancelSheet.OkC
 
         update = getSharedPreferences("APP_UPDATE", Context.MODE_PRIVATE);
         config = getSharedPreferences("APP_CONFIG", Context.MODE_PRIVATE);
-        uriSdkVersion = config.getInt("uriSdkVersion", 30);
         version = update.getInt("versionCode", 0);
-        mapsPath = update.getString("path-maps", "");
-        wallpapersPath = update.getString("path-wallpapers", "");
-        screenshotsPath = update.getString("path-screenshots", "");
 
         missingPerms = findViewById(R.id.main_missingPerms);
         lacLinear = findViewById(R.id.main_optionsLac);
@@ -86,7 +72,6 @@ public class MainActivity extends AppCompatActivity implements OkCancelSheet.OkC
 
         if (config.getBoolean("enableDebug", false)) log.setVisibility(View.VISIBLE);
         devLog("MainActivity started");
-        devLog("uriSdkVersion: "+uriSdkVersion);
 
         checkUpdates(false);
         checkPerms();
@@ -132,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements OkCancelSheet.OkC
     }
 
     public void checkPerms() {
-        if (Build.VERSION.SDK_INT >= 23 && Build.VERSION.SDK_INT < 30) {
+        if (Build.VERSION.SDK_INT >= 23) {
             if (checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
                 afterPermsDenied();
                 devLog("permission denied, attempting to request permission");
@@ -141,27 +126,10 @@ public class MainActivity extends AppCompatActivity implements OkCancelSheet.OkC
                 devLog("permissions granted");
                 afterPermsGranted();
             }
-        } else if (Build.VERSION.SDK_INT >= 30) {
-            if (!Environment.isExternalStorageManager()) {
-                afterPermsDenied();
-                devLog("not external storage manager, showing all file access dialog");
-                showAllFilesAccessDialog();
-            } else {
-                devLog("is external storage manager");
-                afterPermsGranted();
-            }
         } else {
             devLog("old SDK version detected");
             afterPermsGranted();
         }
-    }
-
-    void showAllFilesAccessDialog() {
-        Bundle bundle = new Bundle();
-        bundle.putString("text", getString(R.string.info_storagePermSdk30));
-        OkCancelSheet okCancelSheet = new OkCancelSheet();
-        okCancelSheet.setArguments(bundle);
-        okCancelSheet.show(getSupportFragmentManager(), "allfiles");
     }
 
     void afterPermsGranted() {
@@ -183,9 +151,6 @@ public class MainActivity extends AppCompatActivity implements OkCancelSheet.OkC
             File appFolder = new File(update.getString("path-app", ""));
             File backupFolder = new File(appFolder.getPath()+"/backups/");
             File aBackupFolder = new File(appFolder.getPath()+"/auto-backups/");
-            File tempMapsFolder = new File(update.getString("path-temp-maps", ""));
-            File tempWallpapersFolder = new File(update.getString("path-temp-wallpapers", ""));
-            File tempScreenshotsFolder = new File(update.getString("path-temp-screenshots", ""));
             File nomedia = new File(appFolder.getPath()+"/.nomedia");
             if (!mapsFolder.exists()) mkdirs(mapsFolder);
             if (!wallpapersFolder.exists()) mkdirs(wallpapersFolder);
@@ -193,9 +158,6 @@ public class MainActivity extends AppCompatActivity implements OkCancelSheet.OkC
             if (!appFolder.exists()) mkdirs(appFolder);
             if (!backupFolder.exists()) mkdirs(backupFolder);
             if (!aBackupFolder.exists()) mkdirs(aBackupFolder);
-            if (!tempMapsFolder.exists()) mkdirs(tempMapsFolder);
-            if (!tempWallpapersFolder.exists()) mkdirs(tempWallpapersFolder);
-            if (!tempScreenshotsFolder.exists()) mkdirs(tempScreenshotsFolder);
             if (!nomedia.exists()) nomedia.createNewFile();
         } catch (Exception e) {
             devLog(e.toString());
@@ -207,39 +169,14 @@ public class MainActivity extends AppCompatActivity implements OkCancelSheet.OkC
         devLog(mk.getPath()+" //"+state);
     }
 
-    @SuppressWarnings("deprecation")
-    @SuppressLint("NewApi")
-    public Boolean checkUriPerms(@Nullable String path) {
-        if (Build.VERSION.SDK_INT < uriSdkVersion) return true;
-        if (path == null) return true;
-        String treeId = path.replace(Environment.getExternalStorageDirectory()+"/", "primary:");
-        Uri uri = DocumentsContract.buildDocumentUri("com.android.externalstorage.documents", treeId);
-        Uri treeUri = DocumentsContract.buildTreeDocumentUri("com.android.externalstorage.documents", treeId);
-        devLog("checking uri permissions: "+treeId);
-        int takeFlags = Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_WRITE_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
-        if (getApplicationContext().checkUriPermission(treeUri, Process.myPid(), Process.myUid(), Intent.FLAG_GRANT_READ_URI_PERMISSION) != PackageManager.PERMISSION_GRANTED) {
-            devLog("permissions not granted, requesting");
-            Toast.makeText(getApplicationContext(), R.string.info_treePerm, Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE)
-                    .putExtra(DocumentsContract.EXTRA_INITIAL_URI, uri)
-                    .putExtra(Intent.EXTRA_LOCAL_ONLY, true)
-                    .addFlags(takeFlags);
-            startActivityForResult(intent, REQUEST_URI);
-            return false;
-        } else {
-            devLog("permissions granted");
-            return true;
-        }
-    }
-
-    public void switchActivity(Class<?> i, Boolean allowWithoutPerms, @Nullable String path) {
+    public void switchActivity(Class<?> i, Boolean allowWithoutPerms) {
         if (!allowWithoutPerms && !hasPerms) {
             devLog("no required permissions, checking again");
             checkPerms();
         } else {
             Intent intent = new Intent(this.getApplicationContext(), i);
             devLog("attempting to redirect to "+i.toString());
-            if (checkUriPerms(path)) startActivity(intent);
+            startActivity(intent);
         }
     }
 
@@ -269,21 +206,11 @@ public class MainActivity extends AppCompatActivity implements OkCancelSheet.OkC
     public void setListeners() {
         AppUtil.handleOnPressEvent(missingPerms, this::checkPerms);
         AppUtil.handleOnPressEvent(lacLinear);
-        AppUtil.handleOnPressEvent(redirectMaps, () -> switchActivity(MapsActivity.class, false, mapsPath));
-        AppUtil.handleOnPressEvent(redirectWallpapers, () -> switchActivity(WallpaperActivity.class, false, wallpapersPath));
-        AppUtil.handleOnPressEvent(redirectScreenshots, () -> switchActivity(ScreenshotsActivity.class, false, screenshotsPath));
+        AppUtil.handleOnPressEvent(redirectMaps, () -> switchActivity(MapsActivity.class, false));
+        AppUtil.handleOnPressEvent(redirectWallpapers, () -> switchActivity(WallpaperActivity.class, false));
+        AppUtil.handleOnPressEvent(redirectScreenshots, () -> switchActivity(ScreenshotsActivity.class, false));
         AppUtil.handleOnPressEvent(appLinear);
         AppUtil.handleOnPressEvent(checkUpdates, this::fetchUpdates);
-        AppUtil.handleOnPressEvent(redirectOptions, () -> switchActivity(OptionsActivity.class, true, null));
-    }
-
-    @SuppressLint("InlinedApi")
-    @Override
-    public void onOkClick() {
-        devLog("clicked ok, requesting all files access");
-        Intent intent = new Intent(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-        Uri uri = Uri.fromParts("package", getPackageName(), null);
-        intent.setData(uri);
-        startActivity(intent);
+        AppUtil.handleOnPressEvent(redirectOptions, () -> switchActivity(OptionsActivity.class, true));
     }
 }

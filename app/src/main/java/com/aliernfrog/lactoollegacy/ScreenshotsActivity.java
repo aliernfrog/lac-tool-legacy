@@ -2,7 +2,6 @@ package com.aliernfrog.lactoollegacy;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.documentfile.provider.DocumentFile;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -10,12 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.StrictMode;
-import android.provider.DocumentsContract;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -36,10 +31,6 @@ public class ScreenshotsActivity extends AppCompatActivity {
     LinearLayout rootLinear;
     TextView log;
 
-    Integer uriSdkVersion;
-
-    Uri lacTreeUri;
-    DocumentFile lacTreeFile;
     String lacPath;
     String tempPath;
 
@@ -57,8 +48,6 @@ public class ScreenshotsActivity extends AppCompatActivity {
         config = getSharedPreferences("APP_CONFIG", Context.MODE_PRIVATE);
         update = getSharedPreferences("APP_UPDATE", Context.MODE_PRIVATE);
 
-        uriSdkVersion = config.getInt("uriSdkVersion", 30);
-
         lacPath = update.getString("path-screenshots", null);
         tempPath = update.getString("path-temp-screenshots", null);
 
@@ -70,10 +59,8 @@ public class ScreenshotsActivity extends AppCompatActivity {
         if (config.getBoolean("enableDebug", false)) log.setVisibility(View.VISIBLE);
 
         devLog("ScreenshotsActivity started");
-        devLog("uriSdkVersion: "+uriSdkVersion);
 
         setListeners();
-        useTempPath();
         devLog("lacPath: "+lacPath);
         getScreenshots();
     }
@@ -114,47 +101,9 @@ public class ScreenshotsActivity extends AppCompatActivity {
 
     public void deleteScreenshot(ViewGroup layout, File file) {
         devLog("attempting to delete: "+file.getPath());
-        if (Build.VERSION.SDK_INT >= uriSdkVersion) {
-            DocumentFile documentFile = lacTreeFile.findFile(file.getName());
-            if (documentFile != null) documentFile.delete();
-        }
         file.delete();
         rootLinear.removeView(layout);
         Toast.makeText(getApplicationContext(), R.string.info_done, Toast.LENGTH_SHORT).show();
-    }
-
-    public void saveChangesAndFinish() {
-        if (Build.VERSION.SDK_INT >= uriSdkVersion) {
-            devLog("attempting to save changes and finish");
-            File tempFile = new File(tempPath);
-            File[] files = tempFile.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    DocumentFile fileInLac = lacTreeFile.findFile(file.getName());
-                    if (fileInLac == null) fileInLac = lacTreeFile.createFile("", file.getName());
-                    copyFile(file.getPath(), fileInLac);
-                }
-            }
-            FileUtil.deleteDirectoryContent(tempFile);
-        }
-        finish();
-    }
-
-    @SuppressLint("NewApi")
-    public void useTempPath() {
-        if (Build.VERSION.SDK_INT >= uriSdkVersion) {
-            String treeId = lacPath.replace(Environment.getExternalStorageDirectory()+"/", "primary:");
-            lacTreeUri = DocumentsContract.buildTreeDocumentUri("com.android.externalstorage.documents", treeId);
-            lacTreeFile = DocumentFile.fromTreeUri(getApplicationContext(), lacTreeUri);
-            if (lacTreeFile != null) {
-                DocumentFile[] files = lacTreeFile.listFiles();
-                for (DocumentFile file : files) {
-                    copyFile(file, tempPath + "/" + file.getName());
-                }
-            }
-            lacPath = tempPath;
-            devLog("using temp path as lac path");
-        }
     }
 
     public void shareFile(String path) {
@@ -169,41 +118,12 @@ public class ScreenshotsActivity extends AppCompatActivity {
         }
     }
 
-    public void copyFile(DocumentFile src, String dst) {
-        devLog("attempting to copy "+src.getUri()+" to "+dst);
-        try {
-            FileUtil.copyFile(src, dst, getApplicationContext());
-            devLog("copied successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            devLog(e.toString());
-        }
-    }
-
-    @SuppressLint("NewApi")
-    public void copyFile(String src, DocumentFile dst) {
-        devLog("attempting to copy "+src+" to "+dst);
-        try {
-            FileUtil.copyFile(src, dst, getApplicationContext());
-            devLog("copied successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            devLog(e.toString());
-        }
-    }
-
     void devLog(String toLog) {
         AppUtil.devLog(toLog, log);
     }
 
     void setListeners() {
-        toolbar.setNavigationOnClickListener(v -> saveChangesAndFinish());
+        toolbar.setNavigationOnClickListener(v -> finish());
         AppUtil.handleOnPressEvent(noScreenshots);
-    }
-
-    @Override
-    public void onBackPressed() {
-        saveChangesAndFinish();
-        super.onBackPressed();
     }
 }

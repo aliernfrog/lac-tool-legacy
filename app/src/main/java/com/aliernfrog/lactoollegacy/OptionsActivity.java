@@ -93,7 +93,6 @@ public class OptionsActivity extends AppCompatActivity {
         deleteTemp = findViewById(R.id.options_deleteTemp);
         experimentalOptions = findViewById(R.id.options_ex);
         startActivityName = findViewById(R.id.options_startActivity);
-        uriSdkVersionInput = findViewById(R.id.options_uriSdkVersion);
         updateUrlInput = findViewById(R.id.options_updateUrl);
         changelogLinear = findViewById(R.id.options_changelog_linear);
         changelog = findViewById(R.id.options_changelog);

@@ -1,15 +1,10 @@
 package com.aliernfrog.lactoollegacy;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.DocumentsContract;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,7 +15,6 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.documentfile.provider.DocumentFile;
 
 import com.aliernfrog.lactoollegacy.fragments.MapDeleteSheet;
 import com.aliernfrog.lactoollegacy.fragments.MapDownloadSheet;
@@ -65,8 +59,6 @@ public class MapsActivity extends AppCompatActivity implements MapPickerSheet.Ma
     Integer REQUEST_PICK_MAP = 1;
     Integer REQUEST_PICK_THUMBNAIL = 2;
 
-    Integer uriSdkVersion;
-
     Boolean backupOnEdit;
 
     String currentPath;
@@ -75,9 +67,6 @@ public class MapsActivity extends AppCompatActivity implements MapPickerSheet.Ma
     String backupPath;
     String autoBackupPath;
     Boolean isImported;
-
-    Uri lacTreeUri;
-    DocumentFile lacTreeFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,15 +107,12 @@ public class MapsActivity extends AppCompatActivity implements MapPickerSheet.Ma
         backupPath = appPath+"backups";
         autoBackupPath = appPath+"auto-backups";
 
-        uriSdkVersion = prefsConfig.getInt("uriSdkVersion", 30);
         backupOnEdit = prefsConfig.getBoolean("enableBackupOnEdit", true);
 
         if (prefsConfig.getBoolean("enableDebug", false)) debugText.setVisibility(View.VISIBLE);
 
         devLog("MapsActivity started");
-        devLog("uriSdkVersion: "+uriSdkVersion);
         setListeners();
-        useTempPath();
         devLog("lacPath: "+lacPath);
         autoBackup();
     }
@@ -199,14 +185,6 @@ public class MapsActivity extends AppCompatActivity implements MapPickerSheet.Ma
             if (isImported && thumbnail.exists()) thumbnail.renameTo(new File(lacPath+"/"+newName+".jpg"));
             if (isImported && data.exists()) data.renameTo(new File(lacPath+"/"+newName));
             currentFile.renameTo(new File(parentPath+"/"+newName+".txt"));
-            if (Build.VERSION.SDK_INT >= uriSdkVersion) {
-                DocumentFile thumbnailFile = lacTreeFile.findFile(oldName+".jpg");
-                DocumentFile dataFile = lacTreeFile.findFile(oldName);
-                DocumentFile mapFile = lacTreeFile.findFile(oldName+".txt");
-                if (isImported && thumbnailFile != null) thumbnailFile.renameTo(newName+".jpg");
-                if (isImported && dataFile != null) dataFile.renameTo(newName);
-                if (mapFile != null) mapFile.renameTo(newName+".txt");
-            }
             devLog("renamed the map to: "+newName);
             getMap(newPath);
             Toast.makeText(getApplicationContext(), R.string.info_done, Toast.LENGTH_SHORT).show();
@@ -229,10 +207,6 @@ public class MapsActivity extends AppCompatActivity implements MapPickerSheet.Ma
         String thumbnailPath = lacPath+"/"+mapName+".jpg";
         File thumbnail = new File(thumbnailPath);
         thumbnail.delete();
-        if (Build.VERSION.SDK_INT >= uriSdkVersion) {
-            DocumentFile thumbnailFile = lacTreeFile.findFile(mapName+".jpg");
-            if (thumbnailFile != null) thumbnailFile.delete();
-        }
         devLog("deleted thumbnail file");
         Toast.makeText(getApplicationContext(), R.string.info_done, Toast.LENGTH_SHORT).show();
         getMapThumbnail(currentPath);
@@ -310,14 +284,6 @@ public class MapsActivity extends AppCompatActivity implements MapPickerSheet.Ma
         if (thumbnail.exists()) thumbnail.delete();
         if (data.exists()) FileUtil.deleteDirectory(data);
         map.delete();
-        if (Build.VERSION.SDK_INT >= uriSdkVersion) {
-            DocumentFile thumbnailFile = lacTreeFile.findFile(name+".jpg");
-            DocumentFile dataFile = lacTreeFile.findFile(name);
-            DocumentFile mapFile = lacTreeFile.findFile(name+".txt");
-            if (thumbnailFile != null) thumbnailFile.delete();
-            if (dataFile != null) dataFile.delete();
-            if (mapFile != null) mapFile.delete();
-        }
         mapNameLinear.setVisibility(View.GONE);
         thumbnailLinear.setVisibility(View.GONE);
         mapActionsLinear.setVisibility(View.GONE);
@@ -342,6 +308,7 @@ public class MapsActivity extends AppCompatActivity implements MapPickerSheet.Ma
         startActivity(intent);
     }
 
+    @SuppressWarnings("deprecation")
     public void pickFile(String fileType, String[] allowedTypes, Integer requestCode) {
         devLog("attempting to pick a file with request code: "+requestCode);
         Intent intent = new Intent(this, FilePickerActivity.class);
@@ -393,64 +360,6 @@ public class MapsActivity extends AppCompatActivity implements MapPickerSheet.Ma
         }
     }
 
-    public void copyFile(DocumentFile source, String destination, Boolean getMapWhenDone) {
-        devLog("attempting to copy "+source.getUri()+" to "+destination);
-        try {
-            FileUtil.copyFile(source, destination, getApplicationContext());
-            devLog("copied successfully");
-            if (getMapWhenDone) getMap(destination);
-        } catch (Exception e) {
-            e.printStackTrace();
-            devLog(e.toString());
-        }
-    }
-
-    @SuppressLint("NewApi")
-    public void copyFile(String src, DocumentFile dst) {
-        devLog("attempting to copy "+src+" to "+dst);
-        try {
-            FileUtil.copyFile(src, dst, getApplicationContext());
-            devLog("copied successfully");
-        } catch (Exception e) {
-            e.printStackTrace();
-            devLog(e.toString());
-        }
-    }
-
-    @SuppressLint("NewApi")
-    public void useTempPath() {
-        if (Build.VERSION.SDK_INT >= uriSdkVersion) {
-            String treeId = lacPath.replace(Environment.getExternalStorageDirectory()+"/", "primary:");
-            lacTreeUri = DocumentsContract.buildTreeDocumentUri("com.android.externalstorage.documents", treeId);
-            lacTreeFile = DocumentFile.fromTreeUri(getApplicationContext(), lacTreeUri);
-            if (lacTreeFile != null) {
-                DocumentFile[] files = lacTreeFile.listFiles();
-                for (DocumentFile file : files) {
-                    copyFile(file, tempPath + "/" + file.getName(), false);
-                }
-            }
-            lacPath = tempPath;
-            devLog("using temp path as lac path");
-        }
-    }
-
-    public void saveChangesAndFinish() {
-        if (Build.VERSION.SDK_INT >= uriSdkVersion) {
-            devLog("attempting to save changes and finish");
-            File tempFile = new File(tempPath);
-            File[] files = tempFile.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    DocumentFile fileInLac = lacTreeFile.findFile(file.getName());
-                    if (fileInLac == null) fileInLac = lacTreeFile.createFile("", file.getName());
-                    copyFile(file.getPath(), fileInLac);
-                }
-            }
-            FileUtil.deleteDirectoryContent(tempFile);
-        }
-        finish();
-    }
-
     void devLog(String toLog) {
         AppUtil.devLog(toLog, debugText);
     }
@@ -473,8 +382,8 @@ public class MapsActivity extends AppCompatActivity implements MapPickerSheet.Ma
     }
 
     void setListeners() {
-        toolbar.setNavigationOnClickListener(v -> saveChangesAndFinish());
-        AppUtil.handleOnPressEvent(saveButton, this::saveChangesAndFinish);
+        toolbar.setNavigationOnClickListener(v -> finish());
+        AppUtil.handleOnPressEvent(saveButton, this::finish);
         AppUtil.handleOnPressEvent(mapsPickLinear);
         AppUtil.handleOnPressEvent(pickMap, this::pickMap);
         AppUtil.handleOnPressEvent(mapNameLinear);
@@ -523,11 +432,5 @@ public class MapsActivity extends AppCompatActivity implements MapPickerSheet.Ma
     @Override
     public void onDeleteConfirm() {
         deleteMap();
-    }
-
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        saveChangesAndFinish();
     }
 }

@@ -262,21 +262,6 @@
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <EditText
-                    android:id="@+id/options_uriSdkVersion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:autofillHints="false"
-                    android:ems="10"
-                    android:hint="@string/optionsUriSdkVersion"
-                    android:imeOptions="actionDone"
-                    android:inputType="number"
-                    android:textColor="?android:textColorPrimary"
-                    android:textColorHint="?lactool_hint"
-                    android:textStyle="bold"
-                    tools:ignore="TextFields,TouchTargetSizeCheck" />
-
-                <EditText
                     android:id="@+id/options_updateUrl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
