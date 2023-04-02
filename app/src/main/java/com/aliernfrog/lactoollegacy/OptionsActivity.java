@@ -48,7 +48,6 @@ public class OptionsActivity extends AppCompatActivity {
     EditText startActivityName;
     EditText uriSdkVersionInput;
     EditText updateUrlInput;
-    CheckBox forceFdroid;
     LinearLayout feedbackLinear;
     LinearLayout feedback;
     EditText feedbackInput;
@@ -104,7 +103,6 @@ public class OptionsActivity extends AppCompatActivity {
         startActivityName = findViewById(R.id.options_startActivity);
         uriSdkVersionInput = findViewById(R.id.options_uriSdkVersion);
         updateUrlInput = findViewById(R.id.options_updateUrl);
-        forceFdroid = findViewById(R.id.options_forceFdroid);
         feedbackLinear = findViewById(R.id.options_feedback_linear);
         feedback = findViewById(R.id.options_feedback);
         feedbackInput = findViewById(R.id.options_feedback_input);
@@ -162,7 +160,6 @@ public class OptionsActivity extends AppCompatActivity {
         if (config.getBoolean("enableBackupOnEdit", true)) backupOnEdit.setChecked(true);
         if (config.getBoolean("autoCheckUpdates", true)) autoCheckUpdate.setChecked(true);
         if (config.getBoolean("enableDebug", false)) dev.setChecked(true);
-        if (config.getBoolean("forceFdroid", false)) forceFdroid.setChecked(true);
     }
 
     void changeBoolean(String name, Boolean value) {
@@ -211,7 +208,7 @@ public class OptionsActivity extends AppCompatActivity {
 
     void startActivityWithName(String name) {
         try {
-            Class c = Class.forName(getPackageName()+"."+name);
+            Class<?> c = Class.forName(getPackageName()+"."+name);
             Intent intent = new Intent(this, c);
             startActivity(intent);
         } catch (Exception e) {
@@ -270,7 +267,6 @@ public class OptionsActivity extends AppCompatActivity {
             return false;
         });
 
-        forceFdroid.setOnCheckedChangeListener((buttonView, isChecked) -> changeBoolean("forceFdroid", isChecked));
         AppUtil.handleOnPressEvent(feedbackLinear, () -> AppUtil.toggleView(feedback));
         AppUtil.handleOnPressEvent(feedbackSubmit, this::submitFeedback);
         AppUtil.handleOnPressEvent(changelogLinear, () -> {
