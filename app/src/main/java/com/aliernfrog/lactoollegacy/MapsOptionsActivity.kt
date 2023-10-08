@@ -216,7 +216,7 @@ class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
 
     private fun editRoles() {
         val intent = Intent(this, MapsRolesActivity::class.java)
-        intent.putExtra("roles", mapEditor.mapRoles!!.joinToString(","))
+        intent.putExtra("roles", mapEditor.mapRoles!!.toTypedArray())
         intent.putExtra("mapName", mapName)
         startActivityForResult(intent, requestRoles)
     }
@@ -229,10 +229,10 @@ class MapsOptionsActivity : AppCompatActivity(), MapTypeListener {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         devLog(requestCode.toString() + ": hasData = " + (data != null))
-        if (requestCode == requestRoles && data != null) {
-            mapEditor.mapRoles = data.getStringExtra("roles")?.split(",")?.toMutableList()
-        } else {
-            devLog("data is null")
+        if (requestCode == requestRoles) {
+            data?.getStringArrayExtra("roles")?.let {
+                mapEditor.mapRoles = it.toMutableList()
+            }
         }
     }
 
