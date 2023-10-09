@@ -68,7 +68,7 @@ class MapsRolesActivity : AppCompatActivity() {
         rolesRoot = findViewById(R.id.mapsRoles_root)
         debugText = findViewById(R.id.mapsRoles_debug)
 
-        roleList = intent.extras!!.getStringArrayList("roles") ?: return finish()
+        roleList = intent.getStringArrayListExtra("roles") ?: return finish()
 
         if (config.getBoolean("enableDebug", false)) debugText.visibility = View.VISIBLE
         if (mapName != null) collapsingToolbarLayout.title = mapName
@@ -136,7 +136,7 @@ class MapsRolesActivity : AppCompatActivity() {
 
     private fun saveRolesAndExit() {
         val intent = Intent()
-        intent.putExtra("roles", roleList)
+        intent.putExtra("roles", ArrayList(roleList))
         setResult(RESULT_OK, intent)
         finish()
     }
