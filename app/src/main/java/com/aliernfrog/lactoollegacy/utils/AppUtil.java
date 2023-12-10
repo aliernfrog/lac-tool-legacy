@@ -31,37 +31,13 @@ public class AppUtil {
     public static String getVersName(Context context) throws Exception {
         PackageManager pm = context.getPackageManager();
         PackageInfo pInfo = pm.getPackageInfo(context.getPackageName(), 0);
-        String versionName = pInfo.versionName;
-        SharedPreferences config = context.getSharedPreferences("APP_CONFIG", Context.MODE_PRIVATE);
-        if (config.getBoolean("forceFdroid", false)) versionName = versionName.split("-")[0]+"-fdroid";
-        return versionName;
+        return pInfo.versionName;
     }
 
     public static Integer getVersCode(Context context) throws Exception {
         PackageManager pm = context.getPackageManager();
         PackageInfo pInfo = pm.getPackageInfo(context.getPackageName(), 0);
         return pInfo.versionCode;
-    }
-
-    public static String getLacId(Context context) {
-        SharedPreferences config = context.getSharedPreferences("APP_CONFIG", Context.MODE_PRIVATE);
-        String lacId = config.getString("lacId", "lac");
-        String finalId = "com.MA.LAC";
-        if (lacId.equals("lacd")) finalId = "com.MA.LACD";
-        if (lacId.equals("lacm")) finalId = "com.MA.LACM";
-        if (lacId.equals("lacmb")) finalId = "com.MA.LACMB";
-        return finalId;
-    }
-
-    public static Boolean isLacInstalled(Context context) {
-        PackageManager pm = context.getPackageManager();
-        String idToCheck = getLacId(context);
-        try {
-            pm.getPackageInfo(idToCheck, 0);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     public static void copyToClipboard(String string, Context context) {
@@ -71,7 +47,6 @@ public class AppUtil {
     }
 
     public static Boolean getUpdates(Context context) throws Exception {
-        String versName = getVersName(context);
         SharedPreferences update = context.getSharedPreferences("APP_UPDATE", Context.MODE_PRIVATE);
         SharedPreferences config = context.getSharedPreferences("APP_CONFIG", Context.MODE_PRIVATE);
         SharedPreferences.Editor updateEdit = update.edit();
@@ -83,10 +58,6 @@ public class AppUtil {
         updateEdit.putString("updateChangelog", object.getString("changelog"));
         updateEdit.putString("updateChangelogVersion", object.getString("changelogVersion"));
         updateEdit.putString("notes", object.getString("notes"));
-        if (versName.endsWith("-fdroid")) {
-            updateEdit.putInt("updateLatest", object.getInt("latestFdroid"));
-            updateEdit.putString("updateDownload", object.getString("downloadFdroid"));
-        }
         updateEdit.commit();
         return true;
     }
@@ -96,15 +67,6 @@ public class AppUtil {
         SimpleDateFormat frm = new SimpleDateFormat(format);
         Date now = Calendar.getInstance().getTime();
         return frm.format(now);
-    }
-
-    public static Boolean stringIsNumber(String string) {
-        try {
-            Double.parseDouble(string);
-        } catch (Exception e) {
-            return false;
-        }
-        return true;
     }
 
     public static void clearTempData(String path) {

@@ -22,10 +22,7 @@ import android.widget.Toast;
 
 import com.aliernfrog.lactoollegacy.fragments.ThemeSheet;
 import com.aliernfrog.lactoollegacy.utils.AppUtil;
-import com.aliernfrog.lactoollegacy.utils.WebUtil;
 import com.hbisoft.pickit.PickiT;
-
-import org.json.JSONObject;
 
 @SuppressLint({"UseSwitchCompatOrMaterialCode", "ClickableViewAccessibility"})
 public class OptionsActivity extends AppCompatActivity {
@@ -46,18 +43,11 @@ public class OptionsActivity extends AppCompatActivity {
     Button deleteTemp;
     LinearLayout experimentalOptions;
     EditText startActivityName;
-    EditText uriSdkVersionInput;
     EditText updateUrlInput;
-    CheckBox forceFdroid;
-    LinearLayout feedbackLinear;
-    LinearLayout feedback;
-    EditText feedbackInput;
-    Button feedbackSubmit;
     LinearLayout changelogLinear;
     TextView changelog;
     LinearLayout social_linear;
     LinearLayout discord_lac;
-    LinearLayout discord_lacTool;
     LinearLayout github;
 
     SharedPreferences update;
@@ -67,7 +57,6 @@ public class OptionsActivity extends AppCompatActivity {
     PickiT pickiT;
 
     String tempPath;
-    String feedbackUrl = "https://aliernfrog.repl.co";
 
     String appVers;
     Integer appVersCode;
@@ -102,18 +91,11 @@ public class OptionsActivity extends AppCompatActivity {
         deleteTemp = findViewById(R.id.options_deleteTemp);
         experimentalOptions = findViewById(R.id.options_ex);
         startActivityName = findViewById(R.id.options_startActivity);
-        uriSdkVersionInput = findViewById(R.id.options_uriSdkVersion);
         updateUrlInput = findViewById(R.id.options_updateUrl);
-        forceFdroid = findViewById(R.id.options_forceFdroid);
-        feedbackLinear = findViewById(R.id.options_feedback_linear);
-        feedback = findViewById(R.id.options_feedback);
-        feedbackInput = findViewById(R.id.options_feedback_input);
-        feedbackSubmit = findViewById(R.id.options_feedback_submit);
         changelogLinear = findViewById(R.id.options_changelog_linear);
         changelog = findViewById(R.id.options_changelog);
         social_linear = findViewById(R.id.options_social);
         discord_lac = findViewById(R.id.options_social_discordLac);
-        discord_lacTool = findViewById(R.id.options_social_discordLacTool);
         github = findViewById(R.id.options_social_githubLacTool);
 
         tempPath = update.getString("path-temp", null);
@@ -162,7 +144,6 @@ public class OptionsActivity extends AppCompatActivity {
         if (config.getBoolean("enableBackupOnEdit", true)) backupOnEdit.setChecked(true);
         if (config.getBoolean("autoCheckUpdates", true)) autoCheckUpdate.setChecked(true);
         if (config.getBoolean("enableDebug", false)) dev.setChecked(true);
-        if (config.getBoolean("forceFdroid", false)) forceFdroid.setChecked(true);
     }
 
     void changeBoolean(String name, Boolean value) {
@@ -175,22 +156,6 @@ public class OptionsActivity extends AppCompatActivity {
         if (name.equals("lacId")) requiresRestart = true;
         configEdit.putString(name, value);
         configEdit.commit();
-    }
-
-    void submitFeedback() {
-        String feedback = feedbackInput.getText().toString();
-        if (feedback.length() < 5) return;
-        try {
-            JSONObject object = new JSONObject();
-            object.put("type", "feedback");
-            object.put("feedback", feedback);
-            object.put("from", "LAC Tool "+appVersCode);
-            String response = WebUtil.doPostRequest(feedbackUrl, object);
-            Toast.makeText(getApplicationContext(), response, Toast.LENGTH_SHORT).show();
-            feedbackLinear.setVisibility(View.GONE);
-        } catch (Exception e) {
-            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_SHORT).show();
-        }
     }
 
     void openChangeThemeView() {
@@ -211,7 +176,7 @@ public class OptionsActivity extends AppCompatActivity {
 
     void startActivityWithName(String name) {
         try {
-            Class c = Class.forName(getPackageName()+"."+name);
+            Class<?> c = Class.forName(getPackageName()+"."+name);
             Intent intent = new Intent(this, c);
             startActivity(intent);
         } catch (Exception e) {
@@ -253,14 +218,6 @@ public class OptionsActivity extends AppCompatActivity {
             }
             return false;
         });
-        uriSdkVersionInput.setOnEditorActionListener((v, actionId, event) -> {
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                configEdit.putInt("uriSdkVersion", Integer.parseInt(uriSdkVersionInput.getText().toString()));
-                configEdit.commit();
-                return true;
-            }
-            return false;
-        });
         updateUrlInput.setOnEditorActionListener((v, actionId, event) -> {
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 configEdit.putString("updateUrl", updateUrlInput.getText().toString());
@@ -270,17 +227,13 @@ public class OptionsActivity extends AppCompatActivity {
             return false;
         });
 
-        forceFdroid.setOnCheckedChangeListener((buttonView, isChecked) -> changeBoolean("forceFdroid", isChecked));
-        AppUtil.handleOnPressEvent(feedbackLinear, () -> AppUtil.toggleView(feedback));
-        AppUtil.handleOnPressEvent(feedbackSubmit, this::submitFeedback);
         AppUtil.handleOnPressEvent(changelogLinear, () -> {
             changelogClicks += 1;
             if (changelogClicks > 15) experimentalOptions.setVisibility(View.VISIBLE);
         });
         AppUtil.handleOnPressEvent(social_linear);
         AppUtil.handleOnPressEvent(discord_lac, () -> redirectURL("https://discord.gg/aQhGqHSc3W"));
-        AppUtil.handleOnPressEvent(discord_lacTool, () -> redirectURL("https://discord.gg/SQXqBMs"));
-        AppUtil.handleOnPressEvent(github, () -> redirectURL("https://github.com/aliernfrog/lac-tool"));
+        AppUtil.handleOnPressEvent(github, () -> redirectURL("https://github.com/aliernfrog/lac-tool-legacy"));
     }
 
     @Override

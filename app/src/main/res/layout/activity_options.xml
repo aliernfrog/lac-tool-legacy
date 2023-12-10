@@ -262,21 +262,6 @@
                     tools:ignore="TouchTargetSizeCheck" />
 
                 <EditText
-                    android:id="@+id/options_uriSdkVersion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:autofillHints="false"
-                    android:ems="10"
-                    android:hint="@string/optionsUriSdkVersion"
-                    android:imeOptions="actionDone"
-                    android:inputType="number"
-                    android:textColor="?android:textColorPrimary"
-                    android:textColorHint="?lactool_hint"
-                    android:textStyle="bold"
-                    tools:ignore="TextFields,TouchTargetSizeCheck" />
-
-                <EditText
                     android:id="@+id/options_updateUrl"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -291,15 +276,6 @@
                     android:textStyle="bold"
                     tools:ignore="TextFields,TouchTargetSizeCheck" />
 
-                <CheckBox
-                    android:id="@+id/options_forceFdroid"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:background="?lactool_linearButtonDrawable"
-                    android:text="@string/optionsForceFdroid"
-                    android:textColor="?android:textColorPrimary"
-                    android:textStyle="bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -321,65 +297,6 @@
                     android:linksClickable="true"
                     android:text="@string/optionsChangelogNoChangelog"
                     android:textColor="?android:textColorPrimary" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/options_feedback_linear"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="8dp"
-                android:animateLayoutChanges="true"
-                android:background="?lactool_linearDrawable"
-                android:orientation="vertical"
-                android:padding="8dp">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="@string/optionsFeedback"
-                    android:textColor="?android:textColorPrimary"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <LinearLayout
-                    android:id="@+id/options_feedback"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:visibility="gone"
-                    tools:visibility="visible">
-
-                    <EditText
-                        android:id="@+id/options_feedback_input"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:autofillHints="false"
-                        android:ems="10"
-                        android:hint="@string/optionsFeedbackHint"
-                        android:inputType="textMultiLine|textNoSuggestions|text|textImeMultiLine"
-                        android:maxLength="1000"
-                        android:textColor="?android:textColorPrimary"
-                        android:textColorHint="?lactool_hint"
-                        android:textStyle="bold"
-                        tools:ignore="TouchTargetSizeCheck" />
-
-                    <Button
-                        android:id="@+id/options_feedback_submit"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:background="?lactool_linearBlueDrawable"
-                        android:text="@string/action_done"
-                        android:textColor="#FFFFFF"
-                        android:textStyle="bold"
-                        app:backgroundTint="#005DFF" />
-
-                </LinearLayout>
-
             </LinearLayout>
 
             <LinearLayout
@@ -405,40 +322,14 @@
                     <ImageView
                         android:layout_width="40dp"
                         android:layout_height="40dp"
-                        android:contentDescription="@string/optionsDiscordRcs"
+                        android:contentDescription="@string/optionsDiscordLac"
                         app:srcCompat="@drawable/social_discord" />
 
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="@string/optionsDiscordRcs"
-                        android:textColor="?android:textColorPrimary"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:id="@+id/options_social_discordLacTool"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:background="?lactool_linearButtonDrawable"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:contentDescription="@string/optionsDiscordAliern"
-                        app:srcCompat="@drawable/social_discord" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center"
-                        android:text="@string/optionsDiscordAliern"
+                        android:text="@string/optionsDiscordLac"
                         android:textColor="?android:textColorPrimary"
                         android:textSize="20sp"
                         android:textStyle="bold" />

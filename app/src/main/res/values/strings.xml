@@ -1,11 +1,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name" translatable="false">LAC Tool</string>
-    <string name="warning_missingLac">LAC is not installed, click to install</string>
+    <string name="warning_newApp">New LAC Tool available!</string>
     <string name="warning_missingPerms">Missing permissions, click to fix</string>
-    <string name="info_lacNeeded">LAC Tool helps you manage LAC data. Without LAC, LAC Tool will not be useful.</string>
+    <string name="info_newApp">This LAC Tool version is now legacy and does not support new Android versions.\nClick to get the new LAC Tool</string>
     <string name="info_storagePerm">Storage permission is required to manage maps &amp; wallpapers</string>
-    <string name="info_storagePermSdk30">LAC Tool needs access to all files in order to access, add and manage LAC files.\nGrant all files access to LAC Tool in the next screen.</string>
-    <string name="info_treePerm">LAC Tool needs access to your LAC files in order to manage them, click "use this folder" option and it will get required permissions</string>
     <string name="info_done">Done!</string>
     <string name="info_sharing">Sharing file</string>
     <string name="info_error">Something went wrong</string>
@@ -24,7 +22,6 @@
     <string name="manageMaps">Manage maps</string>
     <string name="manageWallpapers">Manage wallpapers</string>
     <string name="manageScreenshots">View screenshots</string>
-    <string name="startLac">Start LAC</string>
     <string name="options">Options &amp; Info</string>
     <string name="checkUpdates">Check for LAC Tool updates</string>
     <string name="update_toastAvailable">Update available!</string>
@@ -63,9 +60,8 @@
     <string name="mapMerge_output">Output</string>
     <string name="mapMerge_output_name">Map name</string>
     <string name="mapMerge_output_merge">Merge now</string>
-    <string name="mapMerge_warning_noMapSelected">Please select both maps!</string>
-    <string name="mapMerge_warning_posNotValid">Map to add position is not valid!\nExample: 0,0,0</string>
-    <string name="mapMerge_warning_noOutputName">Please set output name!</string>
+    <string name="mapMerge_warning_noMapSelected">Select at least 2 maps</string>
+    <string name="mapMerge_warning_noOutputName">Set output name</string>
     <string name="mapEdit_serverName">Server name</string>
     <string name="mapEdit_mapType">Map type</string>
     <string name="mapEdit_type_0">white-grid</string>
@@ -75,10 +71,15 @@
     <string name="mapEdit_type_4">desert</string>
     <string name="mapEdit_type_5">water</string>
     <string name="mapEdit_mapOptions">Map options</string>
+    <string name="mapEdit_filterObjects">Filter objects</string>
+    <string name="mapEdit_filterObjects_query">Query</string>
+    <string name="mapEdit_filterObjects_exactMatch">Exact match</string>
+    <string name="mapEdit_filterObjects_caseSensitive">Case sensitive</string>
+    <string name="mapEdit_filterObjects_remove">Remove {COUNT} objects</string>
+    <string name="mapEdit_filterObjects_removed">Removed {COUNT} objects</string>
     <string name="mapEdit_otherOptions">Other options</string>
-    <string name="mapEdit_removeAll_tdm">Remove all Team Deathmatch spawnpoints</string>
-    <string name="mapEdit_removeAll_race">Remove all race checkpoints</string>
-    <string name="mapEdit_replaceOldObjects">Replace removed objects with new ones</string>
+    <string name="mapEdit_replaceOldObjects">Replace {COUNT} old objects with new ones</string>
+    <string name="mapEdit_replacedOldObjects">Replaced {COUNT} objects</string>
     <string name="mapRoles">Edit map roles</string>
     <string name="mapRoles_addRole">Add role</string>
     <string name="mapRoles_roleName">Role name</string>
@@ -106,17 +107,12 @@
     <string name="optionsChangelogNoChangelog">No changelog has been found, go to main menu, then check for updates to get changelog</string>
     <string name="optionsChangelogCurrent">Current version</string>
     <string name="optionsChangelogChangelog">Changelog version</string>
-    <string name="optionsDiscordRcs" translatable="false">LAC Discord</string>
-    <string name="optionsDiscordAliern" translatable="false">LAC Tool Discord</string>
+    <string name="optionsDiscordLac" translatable="false">LAC Discord</string>
     <string name="optionsGithub" translatable="false">LAC Tool GitHub</string>
-    <string name="optionsFeedback">LAC Tool feedback</string>
-    <string name="optionsFeedbackHint">Your feedback..</string>
     <string name="optionsExperimental">Experimental options</string>
     <string name="optionsExperimentalHint">Do not change experimental options if you do not know what they do!</string>
     <string name="optionsStartActivity">Start activity with name</string>
-    <string name="optionsUriSdkVersion">URI SDK version (30 by default)</string>
     <string name="optionsUpdateUrl">Update URL</string>
-    <string name="optionsForceFdroid">Force -fdroid suffix</string>
     <string name="backupManage">Manage backups</string>
     <string name="wallpaperPick">Pick wallpaper</string>
     <string name="wallpaperImport">Import the wallpaper</string>

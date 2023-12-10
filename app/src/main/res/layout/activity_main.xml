@@ -42,11 +42,11 @@
             android:paddingRight="16dp">
 
             <LinearLayout
-                android:id="@+id/main_missingLac"
+                android:id="@+id/main_newApp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="8dp"
-                android:background="?lactool_linearRedDrawable"
+                android:background="?lactool_linearBlueDrawable"
                 android:orientation="vertical"
                 android:padding="8dp"
                 android:visibility="gone"
@@ -55,20 +55,22 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
-                    android:text="@string/warning_missingLac"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
+                    android:text="@string/warning_newApp"
                     android:textColor="?lactool_textOnRed"
-                    android:textSize="20sp"
+                    android:textSize="25sp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:alpha="0.9"
                     android:padding="8dp"
-                    android:text="@string/info_lacNeeded"
-                    android:textColor="?lactool_hintOnRed"
+                    android:text="@string/info_newApp"
+                    android:textColor="?lactool_textOnRed"
+                    android:textSize="18sp"
                     android:textStyle="bold" />
-
             </LinearLayout>
 
             <LinearLayout
@@ -85,7 +87,8 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="8dp"
+                    android:paddingHorizontal="8dp"
+                    android:paddingVertical="4dp"
                     android:text="@string/warning_missingPerms"
                     android:textColor="?lactool_textOnRed"
                     android:textSize="20sp"
@@ -96,8 +99,10 @@
                     android:layout_height="wrap_content"
                     android:padding="8dp"
                     android:text="@string/info_storagePerm"
-                    android:textColor="?lactool_hintOnRed"
-                    android:textStyle="bold" />
+                    android:textColor="?lactool_textOnRed"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    android:alpha="0.8" />
             </LinearLayout>
 
             <LinearLayout
@@ -199,32 +204,6 @@
                 android:background="?lactool_linearDrawable"
                 android:orientation="vertical"
                 android:padding="8dp">
-
-                <LinearLayout
-                    android:id="@+id/main_startLac"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="8dp"
-                    android:background="?lactool_linearButtonDrawable"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:layout_width="45dp"
-                        android:layout_height="45dp"
-                        android:contentDescription="@string/startLac"
-                        app:srcCompat="?lactool_playDrawable" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="8dp"
-                        android:text="@string/startLac"
-                        android:textColor="?android:textColorPrimary"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
 
                 <LinearLayout
                     android:id="@+id/main_checkUpdates"
