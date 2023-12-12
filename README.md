@@ -17,6 +17,11 @@
 
 </div>
 
+## 🏚️ Why Legacy?
+New LAC Tool requires at least **Android 6.0**. Legacy is based on the old codebase and it requires at least **Android 4.3**.
+- Only use Legacy if you have Android 5.0 or below. Legacy will NOT work on Android 11 or above.
+- Legacy will mostly get updated when needed (f.e. when a LAC update changes things the app depends on). It may also receive UI updates or new features, but no guarantee.
+
 ## 💡 Features
 - LAC map management
 - LAC map role & option management
