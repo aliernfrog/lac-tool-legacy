@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
         log = findViewById(R.id.main_log);
 
         if (config.getBoolean("enableDebug", false)) log.setVisibility(View.VISIBLE);
-        if (Build.VERSION.SDK_INT >= 23) newApp.setVisibility(View.VISIBLE);
+        if (Build.VERSION.SDK_INT >= 21) newApp.setVisibility(View.VISIBLE);
         devLog("MainActivity started");
 
         checkUpdates(false);

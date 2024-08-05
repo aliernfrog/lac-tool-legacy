@@ -11,8 +11,8 @@ android {
         applicationId = "com.aliernfrog.lactoollegacy"
         minSdk = 18
         targetSdk = 31
-        versionCode = 21000
-        versionName = "2.1.0"
+        versionCode = 21100
+        versionName = "2.1.1"
     }
 
     buildTypes {
@@ -35,5 +35,5 @@ dependencies {
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.coordinatorlayout:coordinatorlayout:1.2.0")
     implementation("com.github.aliernfrog:laclib:1.1.0")
-    implementation("com.github.HBiSoft:PickiT:2.0.2")
+    implementation("com.github.HBiSoft:PickiT:2.0.5")
 }
