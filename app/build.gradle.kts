@@ -11,8 +11,8 @@ android {
         applicationId = "com.aliernfrog.lactoollegacy"
         minSdk = 18
         targetSdk = 31
-        versionCode = 21100
-        versionName = "2.1.1"
+        versionCode = 22000
+        versionName = "2.2.0"
     }
 
     buildTypes {
