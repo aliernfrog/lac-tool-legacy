@@ -19,13 +19,11 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.aliernfrog.lactoollegacy.utils.AppUtil;
 import com.aliernfrog.lactoollegacy.utils.FileUtil;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 
 public class WallpaperActivity extends AppCompatActivity {
     Toolbar toolbar;
-    FloatingActionButton saveButton;
     TextView helpText;
     LinearLayout actionsLinear;
     Button pickWallpaperButton;
@@ -49,7 +47,6 @@ public class WallpaperActivity extends AppCompatActivity {
         setContentView(R.layout.activity_wallpaper);
 
         toolbar = findViewById(R.id.wallpaper_toolbar);
-        saveButton = findViewById(R.id.wallpaper_save);
         helpText = findViewById(R.id.wallpaper_helpText);
         actionsLinear = findViewById(R.id.wallpaper_actionsLinear);
         pickWallpaperButton = findViewById(R.id.wallpaper_pickFile);
@@ -164,7 +161,6 @@ public class WallpaperActivity extends AppCompatActivity {
 
     void setListeners() {
         toolbar.setNavigationOnClickListener(v -> finish());
-        AppUtil.handleOnPressEvent(saveButton, this::finish);
         AppUtil.handleOnPressEvent(helpText, () -> helpText.setVisibility(View.GONE));
         AppUtil.handleOnPressEvent(actionsLinear);
         AppUtil.handleOnPressEvent(pickWallpaperButton, this::pickWallpaperFile);

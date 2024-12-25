@@ -136,15 +136,4 @@
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/wallpaper_save"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="16dp"
-        android:contentDescription="@string/action_save"
-        android:src="@drawable/save"
-        app:backgroundTint="?lactool_blue" />
-
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
