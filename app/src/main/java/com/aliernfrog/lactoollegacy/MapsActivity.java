@@ -23,14 +23,12 @@ import com.aliernfrog.lactoollegacy.fragments.MapPickerSheet;
 import com.aliernfrog.lactoollegacy.utils.AppUtil;
 import com.aliernfrog.lactoollegacy.utils.FileUtil;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 
 public class MapsActivity extends AppCompatActivity implements MapPickerSheet.MapPickerListener, MapDownloadSheet.MapDownloadListener, MapDuplicateSheet.MapDuplicateListener, MapDeleteSheet.MapDeleteListener {
     CollapsingToolbarLayout collapsingToolbarLayout;
     Toolbar toolbar;
-    FloatingActionButton saveButton;
     ImageView appBarImage;
     LinearLayout mapsPickLinear;
     Button pickMap;
@@ -74,7 +72,6 @@ public class MapsActivity extends AppCompatActivity implements MapPickerSheet.Ma
 
         collapsingToolbarLayout = findViewById(R.id.maps_collapsingToolbar);
         toolbar = findViewById(R.id.maps_toolbar);
-        saveButton = findViewById(R.id.maps_save);
         appBarImage = findViewById(R.id.maps_appbar_image);
         mapsPickLinear = findViewById(R.id.maps_pick_linear);
         pickMap = findViewById(R.id.maps_pick_pick);
@@ -381,7 +378,6 @@ public class MapsActivity extends AppCompatActivity implements MapPickerSheet.Ma
 
     void setListeners() {
         toolbar.setNavigationOnClickListener(v -> finish());
-        AppUtil.handleOnPressEvent(saveButton, this::finish);
         AppUtil.handleOnPressEvent(mapsPickLinear);
         AppUtil.handleOnPressEvent(pickMap, this::pickMap);
         AppUtil.handleOnPressEvent(mapNameLinear);
